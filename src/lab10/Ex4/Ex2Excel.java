@@ -10,6 +10,8 @@ package lab10.Ex4;
 //который преобразует значение ячейки в строку. В конце программы мы закрываем файл и освобождаем ресурсы,
 //используя методы close(): Таким образом, эта программа читает содержимое Excel-файла в формате XLSX и выводит его на экран.
 
+import org.apache.poi.EmptyFileException;
+import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -20,25 +22,33 @@ import java.io.IOException;
 
 public class Ex2Excel {
     public static void main(String[] args) throws IOException {
-        //открываем файл для чтения
-        String filePath = "src/lab10/Ex4/Ex5.xlsx";
-        FileInputStream inputStream = new FileInputStream(filePath);
+        try {
+            //открываем файл для чтения
+            String filePath = "src/lab10/Ex4/Ex5.xlsx";
+            FileInputStream inputStream = new FileInputStream(filePath);
 
-        //создаем экземпляр книги эксель из файла
-        XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+            //создаем экземпляр книги эксель из файла
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
 
-        //получаем лист из книги по его имени
-        XSSFSheet sheet = workbook.getSheet("Товары");
+            //получаем лист из книги по его имени
+            XSSFSheet sheet = workbook.getSheet("Товары");
 
-        //перебираем строки и ячейки листа
-        for (Row row : sheet) {
-            for (Cell cell : row) {
-                //выводим значение ячейки на экран
-                System.out.println(cell.toString() + "\t");
+            //перебираем строки и ячейки листа
+            for (Row row : sheet) {
+                for (Cell cell : row) {
+                    //выводим значение ячейки на экран
+                    System.out.println(cell.toString() + "\t");
+                }
+                System.out.println();
             }
-            System.out.println();
+            workbook.close();
+            inputStream.close();
+        } catch (NotOfficeXmlFileException e){
+            System.out.println("Указан не Excel-файл. Укажите файл example.xlsx и запустите программу снова.");
+        }catch (EmptyFileException e){
+            System.out.println("Указан пустой файл.");
+        }catch (NullPointerException e){
+            System.out.println("Не найдена указанная книга \"Товары\"");
         }
-        workbook.close();
-        inputStream.close();
     }
 }

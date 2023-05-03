@@ -2,7 +2,6 @@ package lab10.Ex1_;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -31,8 +30,11 @@ public class Main_Ex1 {
         doc.getDocumentElement().normalize();
 
         try {
-            //addNewBooks(doc);
+            addNewBooks(doc);
             searchElementByYear(doc);
+            removeElementBook(doc);
+
+            //запись в новый файл
             doc.getDocumentElement().normalize();
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             DOMSource source = new DOMSource(doc);
@@ -45,6 +47,30 @@ public class Main_Ex1 {
         }
 
     }
+
+//4. Реализуйте функцию удаления книги из XML-файла.
+//Например, пользователь может ввести название книги, которую хочет удалить,
+//и программа удалит соответствующий элемент <book> из XML-файла.
+
+    public static void removeElementBook(Document document) {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Enter the name of books to be deleted");
+        String deleteElement = in.nextLine();
+        NodeList rootElement = document.getElementsByTagName("book");
+        Element elementRoot;
+        for (int i = 0; i < rootElement.getLength(); i++) {
+            elementRoot = (Element) rootElement.item(i);
+            Element deleteTitle = (Element) elementRoot.getElementsByTagName("title").item(0);
+            String strDeleteTitle = deleteTitle.getTextContent();
+            if (strDeleteTitle.equals(deleteElement)) {
+                elementRoot.getParentNode().removeChild(elementRoot);
+            }
+        }
+    }
+
+//3.Добавьте возможность поиска книг по автору или году издания.
+//Например, пользователь может ввести автора или год издания, а программа выведет список книг,
+//удовлетворяющих этому критерию поиска.
 
     public static void searchElementByYear(Document document) throws XPathExpressionException {
         List<String> list = new ArrayList<>();
@@ -59,9 +85,13 @@ public class Main_Ex1 {
         }
         System.out.println(list);
     }
+
+
+//2.Добавьте возможность записывать новые книги в XML-файл.
+//Например, пользователь может ввести данные о новой книге, а программа добавит новый элемент <book> в XML-файл.
     public static void addNewBooks(Document doc) {
         NodeList rootElement = doc.getElementsByTagName("library");
-        Element elementRoot = null;
+        Element elementRoot;
         Scanner in = new Scanner(System.in);
         for (int i = 0; i < rootElement.getLength(); i++) {
             elementRoot = (Element) rootElement.item(i);
