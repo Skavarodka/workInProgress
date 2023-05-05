@@ -19,20 +19,33 @@ public class YA {
         Character[][] ticTacStart = new Character[3][3];
 
         List<Character> ticTacList = new ArrayList<>();
+        List<Character> ticTacListModify = new ArrayList<>();
 
         int counter = 0;
-        for (int i = 0; i < num.length(); i++){
-            ticTacList.add(num.charAt(counter++));
+        for (int i = 0; i < num.length(); i++) {
+            ticTacList.add(num.charAt(i));
         }
         System.out.println(ticTacList);
-        counter = 0;
-        for (int i = 0; i < ticTacStart.length; i++){
+
+        for (int i = 0; i < ticTacStart.length; i++) {
             for (int j = 0; j < ticTacStart[i].length; j++) {
                 ticTacStart[i][j] = num.charAt(counter++);
             }
         }
         askTest(ticTacStart);
         askWinner(ticTacStart);
+        List<Character> tempX = howMuchXO(ticTacList);
+        List<Character> tempO = howMuchX2(ticTacList);
+        System.out.println(tempX);
+        System.out.println(tempO);
+    }
+
+    static List<Character> howMuchXO(List<Character> characterList) {
+        return characterList.stream().filter(x -> x.equals('X') ).toList();
+    }
+
+    static List<Character> howMuchX2(List<Character> characterList) {
+        return characterList.stream().filter(x -> x.equals('O') ).toList();
     }
     static void askWinner(Character[][] ticTacStart) {
         boolean xWin = false;
