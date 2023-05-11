@@ -28,7 +28,6 @@ public class ExExcel {
         //создаем новый лист в книге
         XSSFSheet sheet = workbook.createSheet("Товары");
 
-        //записываем данные в ячейки
         Row headerRow = sheet.createRow(0);
         headerRow.createCell(0).setCellValue("Товар");
         headerRow.createCell(1).setCellValue("Характеристики");
@@ -44,7 +43,6 @@ public class ExExcel {
         dataRow2.createCell(1).setCellValue("Процессор : Intel Core i5, Оперативная память :");
         dataRow2.createCell(2).setCellValue(25000.0);
 
-        //записываем книгу ексель в файл
 
         String filePath = "src/lab10/Ex4/Ex5.xlsx";
         FileOutputStream outputStream = new FileOutputStream(filePath);
